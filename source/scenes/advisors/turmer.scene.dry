@@ -1,0 +1,32 @@
+title: Philipp Turmer
+is-pinned-card: true
+tags: advisor, jusos
+card-image: img/portraits/PhilippTürmer.jpg
+view-if: turmer_advisor = 1
+new-page: true 
+
+= Philipp Türmer
+
+Philipp Türmer is the chairman of the Jusos, the youth organization of the Social Democratic Party of Germany.
+
+- @moderate_economic_plan
+- @testing
+- @root: Return to main
+
+
+@moderate_economic_plan
+title: Support the reformist economic plan
+subtitle: Aufhäuser can also support a moderate economic plan.
+choose-if: advisor_action_timer = 0 and moderate_plan_adopted = 0 and black_thursday_seen = 1
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] months before next advisor action. ?] [? if moderate_economic_plan = 0 : We have already adopted the reformist economic plan. ?] [? if black_thursday_seen == 0 : We are not currently in an economic crisis. ?]
+on-arrival: advisor_action_timer = 6
+go-to: crisis_program.support_moderate
+
+@testing
+title: Testing some things
+subtitle: Lmao
+choose-if: advisor_action_timer <= 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] months before next advisor action. ?]
+on-arrival: advisor_action_timer = 6
+go-to: crisis_program.support_moderate
+
