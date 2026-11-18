@@ -8,19 +8,23 @@ go-to: start_menu_2
 
 = Modern Social Democracy
 
-= An Alternate History
+{!<img src="img/BundesTag.jpg" style="display:block; margin:0 auto; max-width:100%;">!}
 
 @start_menu_2
+style: start
 
 - @start: Start game
-- @election_simulation: Election simulation
+- @options: Options
+- @updates: Updates
+- @linktree: Socials
+- @achievements: Achievements
 - @credits: Credits
-- @game_over.achievements
 
 
 @start
 style: start
 on-arrival: {!
+Q.show_status = 0;
 Q.started = 1;
 // time elapsed (in months)
 Q.time = 1;
@@ -36,7 +40,7 @@ Q.historical_mode = 0;
 Q.old_demographics = 0;
 // use decimals for reichstag seats
 // TODO: not yet implemented
-Q.use_decimals = 0;
+Q.use_decimals = 1;
 // TODO: detailed difficulty settinigs
 Q.annual_income = 0;
 Q.saves_disabled = 0;
@@ -103,7 +107,7 @@ Q.peoples_party_support = 0;
 
 // organizations
 
-Q.parties = ['linke', 'bsw', 'greens', 'spd', 'cdu', 'csu', 'fdp', 'afd', 'ssw', ' other'];
+Q.parties = ['linke', 'bsw', 'greens', 'spd', 'cdu', 'csu', 'fdp', 'afd', 'ssw', 'other'];
 
 // inter-party relations
 Q.linke_relation = 20;
@@ -318,16 +322,28 @@ Q.economic_growth = 0.2;
 // Current Bundestag composition
 // % of seats in the Bundestag elected in 2025 (630 seats)
 // note: CDU and CSU are combined (for now...)
-Q.spd_r = 19;      // 120 seats
-Q.cdu_r = 26;      // 164
-Q.csu_r = 7;       // 44  (combined CDU/CSU = 33)
-Q.afd_r = 24;      // 152
-Q.greens_r = 14;   // 85
-Q.linke_r = 10;    // 64
-Q.bsw_r = 0;       // below 5%
-Q.fdp_r = 0;       // below 5%
-Q.ssw_r = 0;       // 1 seat (0.2%)
+Q.spd_r = 19.0;    
+Q.cdu_r = 26.0;    
+Q.csu_r = 7.0;     
+Q.afd_r = 24.1;    
+Q.greens_r = 13.5; 
+Q.linke_r = 10.2;  
+Q.bsw_r = 0;
+Q.fdp_r = 0;
+Q.ssw_r = 0.2;     
 Q.other_r = 0;
+
+// Constituencies won - exception rule TBD
+Q.cdu_direct = 143;
+Q.csu_direct = 47;
+Q.afd_direct = 46;
+Q.spd_direct = 44;
+Q.greens_direct = 12;
+Q.linke_direct = 6;
+Q.bsw_direct = 0;
+Q.fdp_direct = 0;
+Q.ssw_direct = 0;
+Q.other_direct = 0;
 
 // diff from prev: the Bundestag elected in 2021 (736 seats)
 Q.old_spd_r = 28;     // 206
@@ -502,6 +518,7 @@ This game is a work of satire and alternate-history fiction. It features real po
 - @2025_main: Begin
 
 @2025_main
+on-arrival: {! Q.show_status = 1; window.updateSidebar(); !}
 audio: empty.mp3
 go-to: main 
 

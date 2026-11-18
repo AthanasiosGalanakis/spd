@@ -2,6 +2,10 @@ title: Status
 new-page: true
 is-special: true
 on-arrival: {!
+Q.cducsu_r = Math.round(((Q.cdu_r || 0) + (Q.csu_r || 0))*10)/10;
+for (var p of ['linke','bsw','greens','spd','fdp','cducsu','afd','ssw','other']) {
+    Q[p + '_r_2'] = (Q[p + '_r'] || 0).toFixed(1);
+}
 if (Q.unemployed) {
     Q.unemployed_2 = Q.unemployed.toFixed(1);
 }
@@ -23,51 +27,39 @@ Resources available: [+ resources +]
 SPD position: [? if spd_toleration : toleration ?][? if spd_in_government : in government - ?][? if spd_toleration == 0 and spd_in_government == 0 and spd_caretaker == 0 : opposition ?][? if spd_caretaker : caretaker government ?]
 [? if in_weimar_coalition and spd_in_government: Weimar Coalition ?][? if in_grand_coalition and spd_in_government: Grand Coalition ?][? if in_popular_front and spd_in_government: Popular Front ?][? if in_left_front and spd_in_government: Left Front ?][? if in_spd_majority and spd_in_government: SPD majority ?][? if in_minority_government and spd_in_government: minority government ?][? if in_emergency_government and spd_in_government: emergency government ?]
 
-[? if spd_in_government and not in_spd_majority and not in_left_front : Coalition dissent: [+ coalition_dissent : coalition_dissent +] ?]
-
-[? if spd_in_government and (in_left_front or in_popular_front): KPD coalition dissent: [+ kpd_coalition_dissent : coalition_dissent +] ?]
+[? if spd_in_government and not in_spd_majority : Coalition dissent: [+ coalition_dissent : coalition_dissent +] ?]
 
 Internal dissent: [+ dissent_percent : dissent +]
 
 = Government
 
-President: [+ president +]
+President: {!<span class="seat other">!}[+ president +]{!</span>!}
 
-Chancellor: [+ chancellor +] ([+ chancellor_party +])
+Chancellor: {!<span class="seat cdu">!}[+ chancellor +]{!</span>!} ({!<span class="seat cdu">!}[+ chancellor_party +]{!</span>!})
 
-Reichstag composition:
+Bundestag composition:
 
-# 1928: 30, 1930: 25, 1932: 22
-{!<span class="tooltip-text" title="Social Democratic Party of Germany">SPD</span>!}: [+ spd_r +]%
-[? if sapd_formed and sapd_r > 0: SAPD: [+ sapd_r +]% ?]
-[? if srpd_formed and srpd_r > 0: SRPD: [+ srpd_r +]% ?]
-# 1928: 15, 1930: 15, 1932: 
-{!<span class="tooltip-text" title="Center Party + Bavarian People's Party">Z + BVP</span>!}: [+ z_r +]%
-# 1928: 10, 1930: 13
-{!<span class="tooltip-text" title="Communist Party of Germany">KPD</span>!}: [+ kpd_r +]%
-# 1928: 5, 1930: 4 (as DstP)
-{!<span class="tooltip-text" title="German Democratic Party">!}[? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]{!</span>!}: [+ ddp_r +]%
-# 1928: 9, 1930: 5
-{!<span class="tooltip-text" title="German People's Party">DVP</span>!}: [+ dvp_r +]%
-# 1928: 14, 1930: 7
-{!<span class="tooltip-text" title="German National People's Party">DNVP</span>!}: [+ dnvp_r +]%
-# 1928: 3, 1930: 18
-{!<span class="tooltip-text" title="National-Socialist German Worker's Party (Nazis)">NSDAP</span>!}: [+ nsdap_r +]%
-# 1928: 9, 1930: 10
-Others: [+ other_r +]%
-
-[? if spd_in_government = 1 : Budget: [+ budget +] ?]
+[? if linke_r > 0 : {!<span class="seat linke">Linke</span>!}: [+ linke_r_2 +]% ?]
+[? if bsw_r > 0 : {!<span class="seat bsw">BSW</span>!}: [+ bsw_r_2 +]% ?]
+[? if greens_r > 0 : {!<span class="seat greens">Greens</span>!}: [+ greens_r_2 +]% ?]
+[? if spd_r > 0 : {!<span class="seat spd">SPD</span>!}: [+ spd_r_2 +]% ?]
+[? if fdp_r > 0 : {!<span class="seat fdp">FDP</span>!}: [+ fdp_r_2 +]% ?]
+[? if cducsu_r > 0 : {!<span class="seat cdu">CDU/CSU</span>!}: [+ cducsu_r_2 +]% ?]
+[? if afd_r > 0 : {!<span class="seat afd">AfD</span>!}: [+ afd_r_2 +]% ?]
+[? if ssw_r > 0 : {!<span class="seat ssw">SSW</span>!}: [+ ssw_r_2 +]% ?]
+[? if other_r > 0 : {!<span class="seat other">Others</span>!}: [+ other_r_2 +]% ?]
 
 Next election: [+ next_election_month : month +] [+ next_election_year +]
 
 = Economics
 
-Inflation: [+ inflation_2 +]%
+[? if spd_in_government = 1 : Budget: [+ budget +] ?]
 
-[? if black_thursday_seen = 1 : Unemployment: [+ unemployed_2 +]% ?]
+Inflation: [+ inflation_2 +]%
 
 Economic growth: [+ economic_growth_2 +]%
 
+Unemployment: [+ unemployed_2 +]% 
 
 
 # = Public Opinion
@@ -76,31 +68,31 @@ Economic growth: [+ economic_growth_2 +]%
 
 = Inter-party Relations
 
+{!<span class="seat linke">Linke</span>!}: [+ linke_relation : relationships +]
 
-{!<span class="tooltip-text" title="Center Party">Z</span>!}: [+ z_relation : relationships +]
+{!<span class="seat bsw">BSW</span>!}: [+ bsw_relation : relationships +]
 
-{!<span class="tooltip-text" title="German Democratic Party">!}[? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]{!</span>!}: [+ ddp_relation : relationships +]
+{!<span class="seat greens">Greens</span>!}: [+ greens_relation : relationships +]
 
-{!<span class="tooltip-text" title="German People's Party">DVP</span>!}: [+ dvp_relation : relationships +]
+{!<span class="seat fdp">FDP</span>!}: [+ fdp_relation : relationships +]
 
-{!<span class="tooltip-text" title="Communist Party of Germany">KPD</span>!}: [+ kpd_relation : relationships +]
+{!<span class="seat cdu">CDU/CSU</span>!}: [+ cdu_relation : relationships +]
 
-{!<span class="tooltip-text" title="German National People's Party">DNVP</span>!}: [+ dnvp_relation : relationships +]
+{!<span class="seat afd">AfD</span>!}: [+ afd_relation : relationships +]
 
-{!<span class="tooltip-text" title="National-Socialist German Worker's Party (Nazis)">NSDAP</span>!}: [+ nsdap_relation : relationships +]
+{!<span class="seat ssw">SSW</span>!}: [+ ssw_relation : relationships +]
 
 = Internal Factions of the SPD
 
-{!<span class="tooltip-text" title="The Left is interested in radical, transformative policies and cooperation with the KPD.">Left</span>!} strength: [+ left_strength : strength +], dissent: [+ left_dissent : dissent +]
+{!<span class="faction-left">Parliamentary Left</span><br>!}Strength: [+ left_strength : strength +]{!<br>!}Dissent: [+ left_dissent : dissent +]
 
-{!<span class="tooltip-text" title="The Center is a faction of Center Marxists, between reform and revolution.">Center</span>!} strength: [+ center_strength : strength +], dissent: [+ center_dissent : dissent +]
+{!<span class="faction-center">Netzwerk Berlin</span><br>!}Strength: [+ center_strength : strength +]{!<br>!}Dissent: [+ center_dissent : dissent +]
 
-{!<span class="tooltip-text" title="Labor's goal is economic reform and benefits for organized workers.">Labor</span>!} strength: [+ labor_strength : strength +], dissent: [+ labor_dissent : dissent +]
+{!<span class="faction-labor">Union Wing</span><br>!}Strength: [+ labor_strength : strength +]{!<br>!}Dissent: [+ labor_dissent : dissent +]
 
-{!<span class="tooltip-text" title="Reformists are pragmatic participants in government, and seek to expand the welfare state and defend democracy.">Reformist</span>!} strength: [+ reformist_strength : strength +], dissent: [+ reformist_dissent : dissent +]
+{!<span class="faction-right">Seeheimer Kreis</span><br>!}Strength: [+ right_strength : strength +]{!<br>!}Dissent: [+ right_dissent : dissent +]
 
-[? if neorevisionism > 0 : Neorevisionist strength: [+ neorevisionist_strength : strength +], dissent: [+ neorevisionist_dissent : dissent +] ?]
-
+[? if socialfascist_formed > 0 : {!<span class="faction-socialfascist">Social-Fascists:</span><br>!}Strength: [+ neorevisionist_strength : strength +]{!<br>!}Dissent: [+ neorevisionist_dissent : dissent +] ?]
 
 @paramilitaries
 on-arrival: {!

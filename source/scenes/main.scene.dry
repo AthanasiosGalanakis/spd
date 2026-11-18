@@ -1,5 +1,5 @@
 title: Next month
-set-bg: img/map_2.jpg
+set-bg: img/BundesTag.jpg
 is-hand: true
 on-arrival: {!
 if (Q.advisor_action_timer <= 0) {
@@ -11,6 +11,19 @@ if (Q.advisor_action_timer <= 0) {
 }
 !}
 max-cards: 4
+
+<div class="leader-row">
+<div class="leader-card">
+<img class="leader-portrait" src="[+ img_spd_leader +]">
+<div class="leader-name">[+ name_spd_leader +]</div>
+<div class="leader-role">Party Co-Chair</div>
+</div>
+<div class="leader-card">
+<img class="leader-portrait" src="[+ img_spd_leader_2 +]">
+<div class="leader-name">[+ name_spd_leader_2 +]</div>
+<div class="leader-role">Party Co-Chair</div>
+</div>
+</div>
 
 - @party
 - @govt

@@ -555,13 +555,182 @@ table {
 }
 
 /* Styles for parties */
-.seat.spd {
-    fill: #E3000F;
-    stroke: var(--border-color);
-    stroke-width: 1.5px;
+.seat.linke {
+    fill: #BE3075;
+    color: #BE3075;
+    stroke: #FFFFFF;
+    stroke-width: 2.5px;
 }
 
-/* Centering the begin button */
+.seat.bsw {
+    fill: #7D254F;
+    color: #7D254F;
+    stroke: #FFFFFF;
+    stroke-width: 2.5px;
+}
+
+.seat.greens {
+    fill: #409A3C;
+    color: #409A3C;
+    stroke: #FFFFFF;
+    stroke-width: 2.5px;
+}
+
+.seat.spd {
+    fill: #E3000F;
+    color: #E3000F;
+    stroke: #FFFFFF;
+    stroke-width: 2.5px;
+}
+
+.seat.cdu {
+    fill: #151518;
+    color: #151518;
+    stroke: #8C8C8C;
+    stroke-width: 2.5px;
+}
+
+.seat.csu {
+    fill: #008AC5;
+    color: #008AC5;
+    stroke: #FFFFFF;
+    stroke-width: 2.5px;
+}
+
+.seat.fdp {
+    fill: #FFED00;
+    color: #FFED00;
+    stroke: #FFFFFF;
+    stroke-width: 2.5px;
+}
+
+.seat.afd {
+    fill: #009EE0;
+    color: #009EE0;
+    stroke: #FFFFFF;
+    stroke-width: 2.5px;
+}
+
+.seat.ssw {
+    fill: #003C8F;
+    color: #003C8F;
+    stroke: #FFFFFF;
+    stroke-width: 2.5px;
+}
+
+/* For other parties and independents */
+.seat.other {
+    fill: #A0A0A0;
+    color: #A0A0A0;
+    stroke: #FFFFFF;
+    stroke-width: 2.5px;
+}
+
+/* SPD internal factions */
+.faction-left          { 
+    color: #9B0A1E; 
+} 
+
+.faction-center        {
+   color: #E3000F; 
+}
+
+.faction-labor         { 
+    color: #E8730C; 
+}
+
+.faction-right         { 
+    color: #4A6FA5; 
+} 
+
+.faction-socialfascist { 
+    color: #8A6D3B; 
+} 
+
+/* Start styling */
 .start ul.choices li { 
     text-align: center; 
 }
+.start ul.choices li:first-child { 
+    font-weight: bold; 
+}
+.start h1 {
+    background: linear-gradient(to bottom,
+        #000000 0%, #000000 33.3%,
+        #DD0000 33.3%, #DD0000 66.6%,
+        #E6B800 66.6%, #E6B800 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: bold;
+}
+
+/* Hides sidebar on game start */
+#stats_sidebar { display: none; }
+
+/* Css for leader stuff */
+.leader-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 24px;
+  margin: 0.5em auto 1.5em auto;
+  max-width: 480px;
+  text-indent: 0;
+}
+.leader-card {
+  flex: 1 1 0;
+  min-width: 150px;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 10px 12px 10px;
+  background-color: var(--card-bg-color);
+  border: 4px solid var(--card-border-color);
+  border-radius: 8px;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2);
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+.leader-portrait {
+  display: block;
+  width: 100%;
+  max-height: 260px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;   
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: var(--content-bg-color);
+  box-sizing: border-box;
+}
+.leader-name {
+  margin-top: 0.6em;
+  font-weight: bold;
+  font-size: 1.05em;
+  line-height: 1.25;
+}
+.leader-role {
+  margin-top: 0.2em;
+  font-size: 0.8em;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--link-color);
+}
+
+@media screen and (max-width: 560px) {
+  .leader-row {
+    gap: 14px;
+  }
+  .leader-card {
+    min-width: 120px;
+  }
+  .leader-portrait {
+    max-height: 200px;
+  }
+}
+
