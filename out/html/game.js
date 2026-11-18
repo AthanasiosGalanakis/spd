@@ -476,3 +476,15 @@ window.updateSidebar = function() {
   };
 
 }());
+window.showAchievements = function() {
+    window.dendryUI.dendryEngine.goToScene('achievements');
+    return false;
+};
+
+window.newGame = function() {
+    if (confirm('Start a new game? Unsaved progress will be lost.')) {
+        window.dendryUI.dendryEngine.beginGame();
+        window.updateSidebar();
+    }
+    return false;
+};
