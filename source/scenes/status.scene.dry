@@ -100,55 +100,50 @@ Q.defence_spending_2 = (Q.defence_spending || 0).toFixed(1);
 Q.democracy_support_disp = Math.round(Q.democracy_support || 0);
 Q.socdem_support_disp = Math.round(Q.socdem_support || 0);
 Q.nationalism_support_disp = Math.round(Q.nationalism_support || 0);
+var parties = ['spd', 'cdu', 'csu', 'greens', 'fdp', 'linke', 'bsw', 'afd'];
+var mins = {def: Q.defence_minister_party, int: Q.interior_minister_party};
+for (var m in mins) {
+    var p = String(mins[m] || '').toLowerCase();
+    for (var x of parties) { Q[m + '_' + x] = (p == x) ? 1 : 0; }
+    Q[m + '_other'] = (parties.indexOf(p) < 0) ? 1 : 0;
+}
 !}
 
 = Security cabinet
 
-Defence minister: [+ defence_minister +] ([+ defence_minister_party +])
+{!<span class="sec-name">Defence minister</span><br>!}[? if def_spd : {!<span class="seat spd">!}[+ defence_minister +] (SPD){!</span>!} ?][? if def_cdu : {!<span class="seat cdu">!}[+ defence_minister +] (CDU){!</span>!} ?][? if def_csu : {!<span class="seat csu">!}[+ defence_minister +] (CSU){!</span>!} ?][? if def_greens : {!<span class="seat greens">!}[+ defence_minister +] (Greens){!</span>!} ?][? if def_fdp : {!<span class="seat fdp">!}[+ defence_minister +] (FDP){!</span>!} ?][? if def_linke : {!<span class="seat linke">!}[+ defence_minister +] (Linke){!</span>!} ?][? if def_bsw : {!<span class="seat bsw">!}[+ defence_minister +] (BSW){!</span>!} ?][? if def_afd : {!<span class="seat afd">!}[+ defence_minister +] (AfD){!</span>!} ?][? if def_other : [+ defence_minister +] ([+ defence_minister_party +]) ?]
 
-Interior minister: [+ interior_minister +] ([+ interior_minister_party +])
+{!<span class="sec-name">Interior minister</span><br>!}[? if int_spd : {!<span class="seat spd">!}[+ interior_minister +] (SPD){!</span>!} ?][? if int_cdu : {!<span class="seat cdu">!}[+ interior_minister +] (CDU){!</span>!} ?][? if int_csu : {!<span class="seat csu">!}[+ interior_minister +] (CSU){!</span>!} ?][? if int_greens : {!<span class="seat greens">!}[+ interior_minister +] (Greens){!</span>!} ?][? if int_fdp : {!<span class="seat fdp">!}[+ interior_minister +] (FDP){!</span>!} ?][? if int_linke : {!<span class="seat linke">!}[+ interior_minister +] (Linke){!</span>!} ?][? if int_bsw : {!<span class="seat bsw">!}[+ interior_minister +] (BSW){!</span>!} ?][? if int_afd : {!<span class="seat afd">!}[+ interior_minister +] (AfD){!</span>!} ?][? if int_other : [+ interior_minister +] ([+ interior_minister_party +]) ?]
 
 = Armed forces
 
-{!<span class="tooltip-text" title="The German armed forces.">Bundeswehr</span>!}: [+ bundeswehr_strength +] thousand troops.
+{!<span class="sec-name sec-bundeswehr tooltip-text" title="The German armed forces.">Bundeswehr</span><br>!}Strength: [+ bundeswehr_strength +] thousand troops{!<br>!}Loyalty: [+ bundeswehr_loyalty : loyalty +]{!<br>!}Readiness: [+ bundeswehr_readiness +]/4
 
-Bundeswehr loyalty: [+ bundeswehr_loyalty : loyalty +]
-
-Bundeswehr readiness: [+ bundeswehr_readiness +]/4
-
-Defence spending: [+ defence_spending_2 +]% of GDP (NATO target: [+ defence_target +]%)
-
-Military service: [? if wehrdienst == 0 : voluntary ?][? if wehrdienst == 1 : compulsory registration ?][? if wehrdienst == 2 : conscription ?]
+{!<span class="sec-name sec-bundeswehr">Defence</span><br>!}Spending: [+ defence_spending_2 +]% of GDP {!<span class="sec-note">!}(NATO target [+ defence_target +]%){!</span>!}{!<br>!}Military service: [? if wehrdienst == 0 : voluntary ?][? if wehrdienst == 1 : compulsory registration ?][? if wehrdienst == 2 : {!<span class="lvl-3">conscription</span>!} ?]
 
 = Police
 
-{!<span class="tooltip-text" title="The federal police, responsible for borders, railways and airports.">Bundespolizei</span>!}: [+ bundespolizei_strength +] thousand members.
+{!<span class="sec-name sec-police tooltip-text" title="The federal police, responsible for borders, railways and airports.">Bundespolizei</span><br>!}Strength: [+ bundespolizei_strength +] thousand{!<br>!}Loyalty: [+ bundespolizei_loyalty : loyalty +]
 
-Bundespolizei loyalty: [+ bundespolizei_loyalty : loyalty +]
+{!<span class="sec-name sec-police tooltip-text" title="The police forces of the 16 Länder.">Landespolizei</span><br>!}Strength: [+ landespolizei_strength +] thousand{!<br>!}Loyalty: [+ landespolizei_loyalty : loyalty +]
 
-{!<span class="tooltip-text" title="The police forces of the 16 Länder.">Landespolizei</span>!}: [+ landespolizei_strength +] thousand members.
-
-Landespolizei loyalty: [+ landespolizei_loyalty : loyalty +]
-
-Border controls: [? if border_controls : active ?][? if border_controls == 0 : lifted ?]
+Border controls: [? if border_controls : {!<span class="lvl-2">active</span>!} ?][? if border_controls == 0 : {!<span class="lvl-0">lifted</span>!} ?]
 
 = Domestic intelligence
 
-{!<span class="tooltip-text" title="The Bundesamt für Verfassungsschutz, the domestic intelligence service.">Verfassungsschutz</span>!} loyalty: [+ verfassungsschutz_loyalty : loyalty +]
+{!<span class="sec-name sec-intel tooltip-text" title="The Bundesamt für Verfassungsschutz, the domestic intelligence service.">Verfassungsschutz</span><br>!}Loyalty: [+ verfassungsschutz_loyalty : loyalty +]{!<br>!}Powers: [+ verfassungsschutz_power +]/4
 
-Verfassungsschutz powers: [+ verfassungsschutz_power +]/4
+{!<span class="seat afd">AfD</span>!} status: [? if afd_classification == 0 : {!<span class="lvl-0">not observed</span>!} ?][? if afd_classification == 1 : {!<span class="lvl-1">suspected case</span>!} ?][? if afd_classification == 2 : {!<span class="lvl-2">confirmed extremist (suspended)</span>!} ?][? if afd_classification == 3 : {!<span class="lvl-3">confirmed extremist</span>!} ?][? if afd_classification == 4 : {!<span class="lvl-4">ban proceedings</span>!} ?]
 
-AfD status: [? if afd_classification == 0 : not observed ?][? if afd_classification == 1 : suspected case ?][? if afd_classification == 2 : confirmed extremist (suspended) ?][? if afd_classification == 3 : confirmed extremist ?][? if afd_classification == 4 : ban proceedings ?]
-
-Extremist threat: [? if extremism_threat == 0 : low ?][? if extremism_threat == 1 : moderate ?][? if extremism_threat == 2 : elevated ?][? if extremism_threat == 3 : high ?][? if extremism_threat == 4 : critical ?]
+Extremist threat: [? if extremism_threat == 0 : {!<span class="lvl-0">low</span>!} ?][? if extremism_threat == 1 : {!<span class="lvl-1">moderate</span>!} ?][? if extremism_threat == 2 : {!<span class="lvl-2">elevated</span>!} ?][? if extremism_threat == 3 : {!<span class="lvl-3">high</span>!} ?][? if extremism_threat == 4 : {!<span class="lvl-4">critical</span>!} ?]
 
 = Public mood
 
-Support for democracy: [+ democracy_support_disp +]%
+{!<span class="sec-name sec-democracy">Support for democracy</span>!}: [+ democracy_support_disp +]%
 
-Support for social democracy: [+ socdem_support_disp +]%
+{!<span class="seat spd">Support for social democracy</span>!}: [+ socdem_support_disp +]%
 
-Nationalism: [+ nationalism_support_disp +]%
+{!<span class="sec-name sec-nationalism">Nationalism</span>!}: [+ nationalism_support_disp +]%
 
 @polls
 on-arrival: {!

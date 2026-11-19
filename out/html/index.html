@@ -21,16 +21,16 @@
     <div class="background" id="bg1">
     </div>
 
-    <div id="options" class="overlay options" style="display: none;">
+    <div id="options" class="overlay options">
 
         <div class="overlay_top">
         <div class="music_player">
             <h3 id="music_header_text">Music</h3>
             <p><span id="currently_playing_text">Currently playing:</span> <span id="currently_playing"></span></p>
-            <p><label for="volume" id="volume_label">Volume:</label><input style="vertical-align:-0.25em;" type="range" min="0" max="100" value="100" id="volume" name="volume" oninput="window.setVolume(this.value);"></p>
+            <p><label for="volume" id="volume_label">Volume:</label><input class="button-image" type="range" min="0" max="100" value="100" id="volume" name="volume" oninput="window.setVolume(this.value);"></p>
 
             <!-- icon sources: https://icons.getbootstrap.com/ -->
-            <p style="text-align: center;">
+            <p class="music_controls">
             <button id="pause-button" class="icon-button" onclick="window.togglePausePlay();">
                 <span id="pause-button-image" class="button-image"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16">
   <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"/> </svg></span>
@@ -68,6 +68,7 @@
                 <tr>
                     <td id="event_images_text">
                         Event images:
+                    </td>
                     <td>
                         <label  class="label_on" for="images_yes">On</label>
                     </td>
@@ -84,7 +85,6 @@
                 <tr>
                     <td> <hr> </td>
                 </tr>
- 
                 <tr>
                     <td id="animations_text">
                         Animations:
@@ -168,35 +168,30 @@
                     <td>
                         <button onclick="window.hideOptions();" class="close_button">Close</button>
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
                 </tr>
             </table>
         </div>
     </div>
 
-    <div id="save" class="overlay saves" style="display: none;">
+    <div id="save" class="overlay saves">
         <table id="saves_table" class="overlay_top">
             <tr>
                 <td>Auto-0</td>
                 <td>
-                    <button class="b save_button" id="save_button_a0">Save</button>
+                    <button class="save_button" id="save_button_a0">Save</button>
                 </td>
                 <td>
-                    <button class="b delete_button" id="delete_button_a0">Delete</button>
+                    <button class="delete_button" id="delete_button_a0">Delete</button>
                 </td>
                 <td class="save_info" id="save_info_a0"></td>
             </tr>
             <tr>
                 <td>Auto-1</td>
                 <td>
-                    <button class="b save_button" id="save_button_a1">Save</button>
+                    <button class="save_button" id="save_button_a1">Save</button>
                 </td>
                 <td>
-                    <button class="b delete_button" id="delete_button_a1">Delete</button>
+                    <button class="delete_button" id="delete_button_a1">Delete</button>
                 </td>
                 <td class="save_info" id="save_info_a1"></td>
             </tr>
@@ -204,80 +199,80 @@
             <tr>
                 <td>0</td>
                 <td>
-                    <button class="b save_button" id="save_button_0">Save</button>
+                    <button class="save_button" id="save_button_0">Save</button>
                 </td>
                 <td>
-                    <button class="b delete_button" id="delete_button_0">Delete</button>
+                    <button class="delete_button" id="delete_button_0">Delete</button>
                 </td>
                 <td class="save_info" id="save_info_0"></td>
             </tr>
             <tr>
                 <td>1</td>
                 <td>
-                    <button class="b save_button" id="save_button_1">Save</button>
+                    <button class="save_button" id="save_button_1">Save</button>
                 </td>
                 <td>
-                    <button class="b delete_button" id="delete_button_1">Delete</button>
+                    <button class="delete_button" id="delete_button_1">Delete</button>
                 </td>
                 <td class="save_info" id="save_info_1"></td>
             </tr>
             <tr>
                 <td>2</td>
                 <td>
-                    <button class="b save_button" id="save_button_2">Save</button>
+                    <button class="save_button" id="save_button_2">Save</button>
                 </td>
                 <td>
-                    <button class="b delete_button" id="delete_button_2">Delete</button>
+                    <button class="delete_button" id="delete_button_2">Delete</button>
                 </td>
                 <td class="save_info" id="save_info_2"></td>
             </tr>
             <tr>
                 <td>3</td>
                 <td>
-                    <button class="b save_button" id="save_button_3">Save</button>
+                    <button class="save_button" id="save_button_3">Save</button>
                 </td>
                 <td>
-                    <button class="b delete_button" id="delete_button_3">Delete</button>
+                    <button class="delete_button" id="delete_button_3">Delete</button>
                 </td>
                 <td class="save_info" id="save_info_3"></td>
             </tr>
             <tr>
                 <td>4</td>
                 <td>
-                    <button class="b save_button" id="save_button_4">Save</button>
+                    <button class="save_button" id="save_button_4">Save</button>
                 </td>
                 <td>
-                    <button class="b delete_button" id="delete_button_4">Delete</button>
+                    <button class="delete_button" id="delete_button_4">Delete</button>
                 </td>
                 <td class="save_info" id="save_info_4"></td>
             </tr>
             <tr>
                 <td>5</td>
                 <td>
-                    <button class="b save_button" id="save_button_5">Save</button>
+                    <button class="save_button" id="save_button_5">Save</button>
                 </td>
                 <td>
-                    <button class="b delete_button" id="delete_button_5">Delete</button>
+                    <button class="delete_button" id="delete_button_5">Delete</button>
                 </td>
                 <td class="save_info" id="save_info_5"></td>
             </tr>
             <tr>
                 <td>6</td>
                 <td>
-                    <button class="b save_button" id="save_button_6">Save</button>
+                    <button class="save_button" id="save_button_6">Save</button>
                 </td>
                 <td>
-                    <button class="b delete_button" id="delete_button_6">Delete</button>
+                    <button class="delete_button" id="delete_button_6">Delete</button>
                 </td>
                 <td class="save_info" id="save_info_6"></td>
             </tr>
             <tr>
                 <td>7</td>
                 <td>
-                    <button class="b save_button" id="save_button_7">Save</button>
+                    <button class="save_button" id="save_button_7">Save</button>
                 </td>
                 <td>
-                    <button class="b delete_button" id="delete_button_7">Delete</button>
+                    <button class="delete_button" id="delete_button_7">Delete</button>
                 </td>
                 <td class="save_info" id="save_info_7"></td>
             </tr>
@@ -289,14 +284,6 @@
         </table>
     </div>
 
-    <!-- Sprite stuff - feel free to comment out/remove if not using -->
-    <div id="contentSpriteContainer">
-        <div class="sprite" id="topLeftSprite"></div>
-        <div class="sprite" id="topRightSprite"></div>
-
-        <div class="sprite" id="bottomLeftSprite"></div>
-        <div class="sprite" id="bottomRightSprite"></div>
-    </div>
 
     <div id='page'>
         <div id="mid_panel">
@@ -306,9 +293,9 @@
                 <div id="header-links">
                     <a id="stats-link" onclick="window.showStats();" href="#">Library</a>
                     <a id="save-link" onclick="dendryUI.showSaveSlots();" href="#">Save/Load</a>
-                    <a id="options-link"  onclick="window.showOptions();" href="#">Options</a>
-                    <a id="achievements-link"  onclick="window.showAchievements();" href="#">Achievements</a>
-                    <a id="new-game-link"  onclick="window.newGame();" href="#">New Game</a>
+                    <a id="options-link" onclick="window.showOptions();" href="#">Options</a>
+                    <a id="achievements-link" onclick="window.showAchievements();" href="#">Achievements</a>
+                    <a id="new-game-link" onclick="window.newGame();" href="#">New Game</a>
                 </div>
             </header>
             <div id="tools_wrapper">
@@ -327,19 +314,6 @@
             <div id='content'>
 
             </div>
-
-            <footer>
-      <!--
-      <p>
-        <a onclick="window.showSaveSlots();" href="#">Save/Load</a>
-        <a onclick="window.quickSave();" href="#">Quick Save</a>
-        <a onclick="window.quickLoad();" href="#">Quick Load</a>
-      </p>
-
-      &copy; 2021 Autumn Chen.
-      Made with <a href="https://github.com/aucchen/dendry">Dendry</a>.
-      -->
-            </footer>
         </div>
     </div>
   </body>

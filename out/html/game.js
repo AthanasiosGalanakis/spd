@@ -334,7 +334,33 @@
   
   // This function allows you to modify the text before it's displayed.
   // E.g. wrapping chat-like messages in spans.
+  // Colours the qdisplay words (loyalty, relationships, dissent, militancy,
+  // strength) in the status sidebar. Only exact qdisplay outputs are matched,
+  // and only while the sidebar is rendering, so event text is never touched.
+  window.levelWordClass = {
+      // loyalty
+      'completely loyal': 'lvl-0', 'generally loyal': 'lvl-0', 'mostly loyal': 'lvl-1',
+      'divided': 'lvl-2', 'mostly disloyal': 'lvl-3', 'generally disloyal': 'lvl-3',
+      'very disloyal': 'lvl-4', 'completely disloyal': 'lvl-4',
+      // relationships
+      'very friendly': 'lvl-0', 'friendly': 'lvl-0', 'warm': 'lvl-1', 'neutral': 'lvl-2',
+      'cool': 'lvl-3', 'cold': 'lvl-3', 'frigid': 'lvl-4', 'hostile': 'lvl-4',
+      // dissent and coalition dissent
+      'very low': 'lvl-0', 'low': 'lvl-1', 'medium': 'lvl-2', 'high': 'lvl-3', 'very high': 'lvl-4',
+      // militancy
+      'Nonexistent': 'lvl-0', 'Very low': 'lvl-0', 'Low': 'lvl-1', 'Medium-low': 'lvl-2',
+      'Medium': 'lvl-2', 'High': 'lvl-3', 'Very high': 'lvl-4',
+      // faction strength
+      'weak': 'str-0', 'moderate': 'str-1', 'strong': 'str-2', 'very strong': 'str-3', 'dominant': 'str-4'
+  };
+
   window.displayText = function(text) {
+      if (window.colorLevelWords && typeof text === 'string') {
+          var cls = window.levelWordClass[text.trim()];
+          if (cls) {
+              return '<span class="' + cls + '">' + text + '</span>';
+          }
+      }
       return text;
   };
 
@@ -364,7 +390,12 @@ window.updateSidebar = function() {
     var scene = dendryUI.game.scenes[window.statusTab];
     dendryUI.dendryEngine._runActions(scene.onArrival);
     var displayContent = dendryUI.dendryEngine._makeDisplayContent(scene.content, true);
-    $('#qualities').append(dendryUI.contentToHTML.convert(displayContent));
+    window.colorLevelWords = true;
+    try {
+        $('#qualities').append(dendryUI.contentToHTML.convert(displayContent));
+    } finally {
+        window.colorLevelWords = false;
+    }
 };
 
   window.changeTab = function(newTab, tabId) {
@@ -423,24 +454,35 @@ window.updateSidebar = function() {
   window.dendryModifyUI = main;
   console.log("Modifying stats: see dendryUI.dendryEngine.state.qualities");
 
+  // Font size. The engine (core.js) does not load or save font_size,
+  // so it is kept in localStorage here.
+  window.fontSizeKey = 'spd_modern_font_size';
+  window.loadFontSize = function() {
+      var fs = 1.1;
+      try {
+          var stored = parseFloat(localStorage[window.fontSizeKey]);
+          if (!isNaN(stored)) { fs = stored; }
+      } catch (e) {}
+      window.dendryUI.font_size = fs;
+  };
+  window.applyFontSize = function() {
+      var fs = Math.round(window.dendryUI.font_size * 10) / 10;
+      fs = Math.min(Math.max(fs, 0.6), 2.0);
+      window.dendryUI.font_size = fs;
+      document.getElementById("content").style.fontSize = fs + "em";
+      document.getElementById("stats_sidebar").style.fontSize = (fs - 0.1) + "em";
+      document.getElementById('font_size_value').textContent = fs.toFixed(1) + "em";
+      try { localStorage[window.fontSizeKey] = fs; } catch (e) {}
+  };
+
   window.increaseFontSize = function() {
         window.dendryUI.font_size += 0.1;
-        var fs = window.dendryUI.font_size;
-        var sidebar_fs = fs - 0.1;
-        document.getElementById("content").setAttribute("style", "font-size: " + fs + "em;");
-        document.getElementById("stats_sidebar").setAttribute("style", "font-size: " + sidebar_fs + "em;");
-        document.getElementById('font_size_value').textContent = window.dendryUI.font_size.toFixed(1) + "em";
-        window.dendryUI.saveSettings();
+        window.applyFontSize();
   }
 
   window.decreaseFontSize = function() {
         window.dendryUI.font_size -= 0.1;
-        var fs = window.dendryUI.font_size;
-        var sidebar_fs = fs - 0.1;
-        document.getElementById("content").setAttribute("style", "font-size: " + fs + "em;");
-        document.getElementById("stats_sidebar").setAttribute("style", "font-size: " + sidebar_fs + "em;");
-        document.getElementById('font_size_value').textContent = window.dendryUI.font_size.toFixed(1) + "em";
-        window.dendryUI.saveSettings();
+        window.applyFontSize();
   }
 
   // After a page reload, continue from the latest autosave (Auto-0).
@@ -467,13 +509,8 @@ window.updateSidebar = function() {
     if (window.dendryUI.dark_mode) {
         document.body.classList.add('dark-mode');
     }
-    if (window.dendryUI.font_size != 1.1) {
-        var fs = window.dendryUI.font_size;
-        var sidebar_fs = fs - 0.1;
-        document.getElementById("content").setAttribute("style", "font-size: " + fs + "em;");
-        document.getElementById("stats_sidebar").setAttribute("style", "font-size: " + sidebar_fs + "em;");
-    }
-    document.getElementById('font_size_value').textContent = window.dendryUI.font_size.toFixed(1) + "em";
+    window.loadFontSize();
+    window.applyFontSize();
     window.pinnedCardsDescription = "Advisor cards - actions are only usable once per 6 months.";
     window.resumeAutosave();
   };

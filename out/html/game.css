@@ -10,8 +10,8 @@ body {
   --tab-bg-color: #dedede;
   --tab-color: #ddd;
   --tab-hover-color: #ececec;
-  --card-border-color: #ccc; 
-  --card-bg-color: #ddd; 
+  --card-border-color: #ccc;
+  --card-bg-color: #ddd;
   font-family: "Minion Pro", Georgia, serif;
   background-color: var(--bg-color);
   padding: 0;
@@ -31,17 +31,11 @@ body.dark-mode {
   --card-border-color: #4c4c4c;
   --card-bg-color: #3f3f3f;
 }
-body.dark-mode #content {
-  border-style: double;
-  border-width: 4px;
-  border-color: #888;
-}
+body.dark-mode #content,
 body.dark-mode .tools {
-  border-style: double;
-  border-width: 4px;
-  border-color: #888;
+  border: 4px double #888;
 }
-header, #content, footer {
+header, #content {
   color: var(--text-color);
   max-width: 540px;
   margin: 0 auto;
@@ -54,37 +48,35 @@ header, #content, footer {
   padding: 1em 1.5em 1.5em 1.5em;
   box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2);
 }
-footer {
-  margin-top: 1em;
-  font-size: 0.8em;
-  position: relative;
-}
-footer a {
-  padding-right: 1em;
-}
-header {
-  text-align: right
-}
+
+/* Top bar: links row, title and author */
 #header-links {
-  text-align: left;
-  float: left;
-  display: inline-block;
-  margin-bottom: 0.5em;
-  padding-left: 1em;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  margin: 16px 0;
+  padding: 0;
+  box-sizing: border-box;
   box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2);
   background-color: var(--bg-color);
 }
 #header-links a {
   padding-right: 1em;
+  white-space: nowrap;
 }
 header h1, header h2 {
-  display: inline-block;
-  font-weight: normal;
+  display: block;
   margin: 0;
   font-size: 1em;
+  font-weight: normal;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 header h1 {
   font-weight: bold;
+}
+header h2 {
+  margin-top: 4px;
 }
 header h2:before {
   content: "by";
@@ -93,14 +85,10 @@ header h2:before {
 }
 
 .button-image {
-    vertical-align:-0.25em;
+  vertical-align: -0.25em;
 }
-
 .icon-button {
-    padding-top: 0.5em;
-    padding-bottom: 0.25em;
-    padding-left: 0.25em;
-    padding-right: 0.25em;
+  padding: 0.5em 0.25em 0.25em;
 }
 
 #content #read-marker {
@@ -113,15 +101,17 @@ header h2:before {
 #content h1:first-child {
   margin-top: 0.5em;
 }
-#content h1 {
-  margin: 2em 0 1em 0;
-  font-size: 1.35em;
+#content h1, #qualities h1 {
   font-weight: normal;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-shadow: rgba(255, 255, 255, 0.75) 2px 2px 2px,
                rgba(0, 0, 0, 0.1) -1px -1px 2px;
+}
+#content h1 {
+  margin: 2em 0 1em 0;
+  font-size: 1.35em;
 }
 a {
   color: var(--link-color);
@@ -155,7 +145,8 @@ ul.choices li div.subtitle {
   margin-left: 2em;
   font-style: italic;
 }
-ul.choices li.unavailable {
+ul.choices li.unavailable,
+.unavailable-card {
   color: var(--unavailable-color);
   background-color: var(--unavailable-bg-color) !important;
   cursor: default !important;
@@ -179,10 +170,14 @@ blockquote.attribution {
 blockquote + blockquote.attribution {
   margin-top: -1em;
 }
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 /* This is mostly copied from undum. */
 #mid_panel {
-  margin: 0 16rem;
-  margin-right: 13.5em;
+  margin: 0 13.5em 0 16rem;
 }
 #page {
   margin: 0 auto;
@@ -205,11 +200,6 @@ blockquote + blockquote.attribution {
 }
 .tools.left {
   float: left;
-  left: 0.4em;
-}
-.tools.right {
-  float: right;
-  right: 0.4em;
 }
 #qualities {
   text-indent: 0;
@@ -220,144 +210,111 @@ blockquote + blockquote.attribution {
 }
 #qualities h1 {
   font-size: 1.1em;
-  font-weight: normal;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  text-shadow: rgba(255, 255, 255, 0.75) 2px 2px 2px,
-               rgba(0, 0, 0, 0.1) -1px -1px 2px;
 }
 #qualities h1 + p:first-line {
   font-weight: normal;
 }
 
-
 /* tabs */
 .tab_container {
-    background-color: var(--tab-bg-color);
-    margin-top: -0.6em;
-    margin-left: -0.6em;
-    margin-right: -0.6em;
-    display: flex;
+  background-color: var(--tab-bg-color);
+  margin-top: -0.6em;
+  margin-left: -0.6em;
+  margin-right: -0.6em;
+  display: flex;
 }
 .tab_button {
-    font-family: inherit;
-    font-weight: normal;
-    background-color: var(--tab-color);
-    color: var(--text-color);
-    border: none;
-    outline: none;
-    flex: 1 1 auto;
-    min-width: 0;
-    box-sizing: border-box;
-    padding: 10px 6px;
-    white-space: nowrap;
-    text-align: center;
-    font-size: 0.9em;
-    cursor: pointer;
+  font-family: inherit;
+  font-weight: normal;
+  background-color: var(--tab-color);
+  color: var(--text-color);
+  border: none;
+  outline: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 10px 6px;
+  white-space: nowrap;
+  text-align: center;
+  font-size: 0.9em;
+  cursor: pointer;
 }
 .tab_button.active {
-    background-color: var(--content-bg-color);
+  background-color: var(--content-bg-color);
 }
 .tab_button:hover {
-    background-color: var(--tab-hover-color);
+  background-color: var(--tab-hover-color);
 }
 
-
+/* Overlays (options, saves) and background images */
+.overlay, .background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
 .overlay {
-    background: rgba(0,0,0,0.7);
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    overflow: scroll;
-}
-.options h3 {
-    text-align: center;
-}
-.music_player {
-    text-align: left;
+  display: none;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2;
+  overflow: auto;
 }
 .options {
-    text-align: right;
+  text-align: right;
+}
+.options h3 {
+  text-align: center;
+}
+.music_player {
+  text-align: left;
+}
+.music_controls {
+  text-align: center;
 }
 .overlay_top {
-    position: relative;
-    max-width: 540px;
-    margin: 100px auto;
-    background: rgba(50,50,50,0.7);
-    border: 2px solid;
-    color: white;
+  position: relative;
+  max-width: 540px;
+  margin: 100px auto;
+  background: rgba(50, 50, 50, 0.7);
+  border: 2px solid;
+  color: white;
 }
 .save_info {
-    min-width: 10em;
+  min-width: 10em;
 }
 .background {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: var(--bg-color);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    overflow: hidden;
+  background-color: var(--bg-color);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  overflow: hidden;
 }
-/*
- * This is used for overlaying transparencies
- * only transition on fade-in
- * */
+/* bg1 is laid over bg2 for fade-in transitions */
 #bg2 {
-    z-index: -100;
+  z-index: -100;
 }
 #bg1 {
-    z-index: -99;
-}
-.b {
-}
-.save_button {
-}
-.delete_button {
+  z-index: -99;
 }
 
 /*
  * Card stuff for dendrynexus
- * 
  */
-
 ul.decks, ul.hand, ul.pinned-cards {
   list-style: none;
   padding-left: 0;
 }
-
-.hand {
-
-}
-
-.pinned-cards {
-
-}
-
-.deck {
-
-}
-
-a.card {
+a.card, div.blank-card {
   display: inline-block;
   width: 120px;
   height: 150px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
   border: 10px solid var(--card-border-color);
   margin-bottom: 0.5em;
+}
+a.card {
   position: relative;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
 }
 a.card:hover {
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
@@ -365,14 +322,8 @@ a.card:hover {
   top: -5px;
 }
 div.blank-card {
-  display: inline-block;
-  width: 120px;
-  height: 150px;
   background-color: var(--card-bg-color);
-  border: 10px solid var(--card-border-color);
-  margin-bottom: 0.5em;
 }
-
 .card-in-hand, .pinned-card, .deck {
   display: inline-block;
   position: relative;
@@ -380,25 +331,15 @@ div.blank-card {
   margin-right: 1em;
   vertical-align: top;
 }
-
-/* TODO: unavailable card */
-.unavailable-card {
-  color: var(--unavailable-color);
-  background-color: var(--unavailable-bg-color) !important;
-  cursor: default !important;
-}
-
 .card-caption {
   text-align: center;
   display: block;
   font-size: 1em;
 }
-
 .card-tooltip {
   position: absolute;
   visibility: hidden;
   width: 150px;
-  max-width: 200px;
   font-size: 0.9em;
   z-index: 2;
   padding: 0.2em;
@@ -406,121 +347,64 @@ div.blank-card {
   background-color: var(--content-bg-color);
   left: 105%;
 }
-
 .card-img {
   height: 150px;
   width: 120px;
   object-fit: cover;
 }
-
 a.card:focus .card-tooltip, a.card:hover .card-tooltip {
   visibility: visible;
-  position: absolute;
 }
 
 /* Unlike cards, face images can have different sizes. */
 .face-figure {
-  /*vertical-align: top;*/
   display: inline-block;
   border: 5px solid var(--card-border-color);
   float: left;
   max-width: 35%;
-  /*max-height: 180px;*/
   margin-right: 1em;
   margin-bottom: 0.5em;
   overflow: hidden;
 }
 .face-img {
-  /*max-width: 150px;*/
   vertical-align: bottom;
   object-fit: cover;
-}
-
-/*
- * sprite stuff- feel free to comment out/remove if not using
- */
-img {
-    max-width: 100%;
-    max-height: 100%;
-}
-#contentSpriteContainer {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  max-width: 62em;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  z-index: -97;
-}
-.sprite {
-    position: absolute;
-    width: 180px;
-}
-#topLeftSprite {
-    float: left;
-    top: -1em;
-    left: 0.4em;
-}
-#topRightSprite {
-    float: right;
-    top: -1em;
-    right: 0.4em;
-}
-#bottomLeftSprite {
-    float: left;
-    left: 0.4em;
-    top: 50%;
-}
-#bottomRightSprite {
-    float: right;
-    right: 0.4em;
-    top: 50%;
 }
 
 /* smaller screens: hide left margin */
 @media screen and (max-width: 1200px) {
   .tools {
-      margin-right: 0.4em;
-      margin-left: 0.4em;
+    margin-right: 0.4em;
+    margin-left: 0.4em;
   }
   #mid_panel {
-      margin-right: 0.4em;
+    margin-right: 0.4em;
   }
 }
 /* mobile: move the stat box to the top if the screen is too small,
  * and reduce font size slightly. */
 @media screen and (max-width: 560px) {
   #page {
-      position: static;
+    position: static;
   }
   #content {
-      position: static;
-      font-size: 1em;
-      line-height: 160%;
-      padding: 1em 1em 1.5em 1em;
-  }
-  #qualities {
-      font-size: 1em;
+    position: static;
+    font-size: 1em;
+    line-height: 160%;
+    padding: 1em 1em 1.5em 1em;
   }
   #tools_wrapper {
     position: static;
   }
   .tools {
-      width: 90%;
-      margin: 2em 0 1em 0;
-      margin: 0.4em;
+    width: 90%;
+    margin: 0.4em;
   }
   .tools.left {
-      float: none;
-      left: 0;
-  }
-  .tools.right {
-      float: none;
-      right: 0;
+    float: none;
   }
   #mid_panel {
-      margin: 0 auto;
+    margin: 0 auto;
   }
 
   /* cards are smaller on mobile */
@@ -528,23 +412,13 @@ img {
     height: 125px;
     width: 100px;
   }
-  a.card {
+  a.card, div.blank-card {
     width: 100px;
     height: 125px;
-    border: 8px solid var(--card-border-color);
-    margin-bottom: 0.5em;
-    position: relative;
-  }
-  div.blank-card {
-    width: 100px;
-    height: 125px;
-    border: 8px solid var(--card-border-color);
-    margin-bottom: 0.5em;
+    border-width: 8px;
   }
   .card-in-hand, .pinned-card, .deck {
     max-width: 120px;
-    margin-right: 1em;
-    vertical-align: top;
   }
 }
 
@@ -559,206 +433,127 @@ img {
 }
 
 table {
-    border-spacing: 0.5em;
+  border-spacing: 0.5em;
 }
 
 /* Styles for parties */
-.seat.linke {
-    fill: #BE3075;
-    color: #BE3075;
-    stroke: #FFFFFF;
-    stroke-width: 2.5px;
+.seat {
+  stroke: #FFFFFF;
+  stroke-width: 2.5px;
 }
-
-.seat.bsw {
-    fill: #7D254F;
-    color: #7D254F;
-    stroke: #FFFFFF;
-    stroke-width: 2.5px;
-}
-
-.seat.greens {
-    fill: #409A3C;
-    color: #409A3C;
-    stroke: #FFFFFF;
-    stroke-width: 2.5px;
-}
-
-.seat.spd {
-    fill: #E3000F;
-    color: #E3000F;
-    stroke: #FFFFFF;
-    stroke-width: 2.5px;
-}
-
-.seat.cdu {
-    fill: #151518;
-    color: #151518;
-    stroke: #8C8C8C;
-    stroke-width: 2.5px;
-}
-
-.seat.csu {
-    fill: #008AC5;
-    color: #008AC5;
-    stroke: #FFFFFF;
-    stroke-width: 2.5px;
-}
-
-.seat.fdp {
-    fill: #FFED00;
-    color: #FFED00;
-    stroke: #FFFFFF;
-    stroke-width: 2.5px;
-}
-
-.seat.afd {
-    fill: #009EE0;
-    color: #009EE0;
-    stroke: #FFFFFF;
-    stroke-width: 2.5px;
-}
-
-.seat.ssw {
-    fill: #003C8F;
-    color: #003C8F;
-    stroke: #FFFFFF;
-    stroke-width: 2.5px;
-}
-
-/* For other parties and independents */
-.seat.other {
-    fill: #A0A0A0;
-    color: #A0A0A0;
-    stroke: #FFFFFF;
-    stroke-width: 2.5px;
-}
+.seat.linke  { fill: #BE3075; color: #BE3075; }
+.seat.bsw    { fill: #7D254F; color: #7D254F; }
+.seat.greens { fill: #409A3C; color: #409A3C; }
+.seat.spd    { fill: #E3000F; color: #E3000F; }
+.seat.cdu    { fill: #151518; color: #151518; stroke: #8C8C8C; }
+.seat.csu    { fill: #008AC5; color: #008AC5; }
+.seat.fdp    { fill: #FFED00; color: #FFED00; }
+.seat.afd    { fill: #009EE0; color: #009EE0; }
+.seat.ssw    { fill: #003C8F; color: #003C8F; }
+.seat.other  { fill: #A0A0A0; color: #A0A0A0; } /* other parties and independents */
+body.dark-mode .seat.cdu { color: #d8d8d8; }
+body.dark-mode .seat.bsw { color: #c080b0; }
+body.dark-mode .seat.ssw { color: #6a9be0; }
 
 /* SPD internal factions */
-.faction-left          { 
-    color: #9B0A1E; 
-} 
-
-.faction-center        {
-   color: #E3000F; 
-}
-
-.faction-labor         { 
-    color: #E8730C; 
-}
-
-.faction-right         { 
-    color: #4A6FA5; 
-} 
-
-.faction-socialfascist { 
-    color: #8A6D3B; 
-} 
+.faction-left          { color: #9B0A1E; }
+.faction-center        { color: #E3000F; }
+.faction-labor         { color: #E8730C; }
+.faction-right         { color: #4A6FA5; }
+.faction-socialfascist { color: #8A6D3B; }
 
 /* Start styling */
-.start ul.choices li { 
-    text-align: center; 
+.start ul.choices li {
+  text-align: center;
 }
-.start ul.choices li:first-child { 
-    font-weight: bold; 
+.start ul.choices li:first-child {
+  font-weight: bold;
 }
 .start h1 {
-    background: linear-gradient(to bottom,
-        #000000 0%, #000000 33.3%,
-        #DD0000 33.3%, #DD0000 66.6%,
-        #D4A600 66.6%, #D4A600 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-weight: bold;
+  background: linear-gradient(to bottom,
+      #000000 0%, #000000 33.3%,
+      #DD0000 33.3%, #DD0000 66.6%,
+      #D4A600 66.6%, #D4A600 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
 }
 
-/* Hides sidebar on game start */
+/* Hides sidebar on game start (game.js shows it once show_status is set) */
 #stats_sidebar { display: none; }
 
 /* Leader island */
 .leader-island {
-    background-color: var(--content-bg-color);
-    padding: 1.2em 2.5em 1.5em;
-    margin: 1.5em auto;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  background-color: var(--content-bg-color);
+  padding: 1.2em 2.5em 1.5em;
+  margin: 1.5em auto;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
-
 .leader-party {
-    text-align: center;
-    font-weight: normal;
-    padding-bottom: 0.5em;
-    border-bottom: 2px solid var(--text-color);
-    margin: 0 0 1em;
+  text-align: center;
+  font-weight: normal;
+  padding-bottom: 0.5em;
+  border-bottom: 2px solid var(--text-color);
+  margin: 0 0 1em;
 }
-
 .leader-row {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 32px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 32px;
 }
-
 .leader-card {
-    flex: 1 1 0;
-    max-width: 220px;
-    text-align: center;
+  flex: 1 1 0;
+  max-width: 220px;
+  text-align: center;
 }
-
 .leader-portrait {
-    display: block;
-    width: 100%;
-    max-height: 260px;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    border: 3px solid #000;
-    box-sizing: border-box;
-    margin: 0 auto 0.5em;
+  display: block;
+  width: 100%;
+  max-height: 260px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border: 3px solid #000;
+  box-sizing: border-box;
+  margin: 0 auto 0.5em;
 }
-
 .leader-name {
-    font-weight: bold;
-    line-height: 1.3;
+  font-weight: bold;
+  line-height: 1.3;
 }
-
 .leader-role {
-    color: #666;
-    font-style: italic;
+  color: #666;
+  font-style: italic;
 }
 
-/* Center top bar cause holy shit */
-#header-links {
-    display: flex !important;
-    justify-content: space-evenly;
-    width: 100%;
-    max-width: 890px !important;
-    margin: 16px auto 16px !important; 
-    padding: 0 !important;
-    box-sizing: border-box;
-}
+/* ---------- Security tab ---------- */
+.sec-name        { font-weight: bold; }
+.sec-bundeswehr  { color: #5B6B3A; }
+.sec-police      { color: #1F4E8C; }
+.sec-intel       { color: #6B4C9A; }
+.sec-democracy   { color: #2E6FB5; }
+.sec-nationalism { color: #8A6D3B; }
+.sec-note        { font-size: 0.85em; opacity: 0.7; }
+.lvl-0, .lvl-1, .lvl-2, .lvl-3, .lvl-4,
+.str-0, .str-1, .str-2, .str-3, .str-4 { font-weight: bold; }
+.lvl-0 { color: #2E8B57; }
+.lvl-1 { color: #7A9A2E; }
+.lvl-2 { color: #C9A000; }
+.lvl-3 { color: #E8730C; }
+.lvl-4 { color: #C62828; }
+.str-0 { color: #8FA8C8; }
+.str-1 { color: #5E86B8; }
+.str-2 { color: #3A67A3; }
+.str-3 { color: #1F4E8C; }
+.str-4 { color: #0D2F5E; }
+body.dark-mode .str-3 { color: #5E8FD0; }
+body.dark-mode .str-4 { color: #8DB4EA; }
+body.dark-mode .sec-bundeswehr { color: #9DB070; }
+body.dark-mode .sec-police     { color: #7AA6E0; }
+body.dark-mode .sec-intel      { color: #B49AD8; }
+body.dark-mode .sec-democracy  { color: #7FB0E8; }
 
-#header-links a {
-    width: auto !important;
-    float: none !important;
-    white-space: nowrap;
-}
-
-#game-title,
-#game-author {
-    display: block !important;
-    float: none !important;
-    position: static !important;
-    width: 100%;
-    text-align: center !important;
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-#game-author {
-    margin-top: 4px;
-}
-
-/* CSS for status/polls */
 /* ---------- Polls tab ---------- */
 /* Dendry wraps each line in <p>; the rows are <div>s, so hide the empty <p> the browser leaves behind */
 #qualities p:empty { display: none; }
@@ -774,16 +569,20 @@ table {
   flex: none;
   font-weight: bold;
 }
-.poll-track {
-  flex: 1;
+.poll-track, .poll-stack {
   height: 0.8em;
   border-radius: 3px;
   overflow: hidden;
+}
+.poll-track {
+  flex: 1;
   background: var(--unavailable-bg-color);
 }
-.poll-track .poll-fill {
+.poll-fill {
   display: block;
   height: 100%;
+}
+.poll-track .poll-fill {
   border-radius: 3px;
 }
 .poll-pct {
@@ -798,13 +597,9 @@ table {
 .poll-group summary { cursor: pointer; }
 .poll-stack {
   display: flex;
-  height: 0.8em;
   margin-top: 0.25em;
-  border-radius: 3px;
-  overflow: hidden;
   background: #909090; /* the grey left over = Others */
 }
-.poll-stack .poll-fill { height: 100%; }
 .poll-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -814,7 +609,7 @@ table {
 }
 .poll-grid-name { font-weight: bold; }
 
-/* Party colours for the bars (same colours as the .seat classes) */
+/* Party colours for the bars */
 .poll-fill.linke  { background: #B61C3E; }
 .poll-fill.greens { background: #46962B; }
 .poll-fill.spd    { background: #E3000F; }
@@ -828,11 +623,8 @@ table {
 .poll-fill.other  { background: #909090; }
 
 /* Dark mode: lighten the colours that vanish on a dark background */
-body.dark-mode .poll-track    { background: rgba(255, 255, 255, 0.1); }
+body.dark-mode .poll-track { background: rgba(255, 255, 255, 0.1); }
 body.dark-mode .poll-fill.cdu,
 body.dark-mode .poll-fill.union { background: #d8d8d8; }
 body.dark-mode .poll-fill.bsw { background: #9a5a88; }
 body.dark-mode .poll-fill.ssw { background: #4a7fd0; }
-body.dark-mode .seat.cdu      { color: #d8d8d8; }
-body.dark-mode .seat.bsw      { color: #c080b0; }
-body.dark-mode .seat.ssw      { color: #6a9be0; }
