@@ -144,18 +144,27 @@ Q.spd_prussia = 1;
 // Options: spd, z, dnvp, papen, nsdap
 Q.prussian_government = "SPD";
 
-// The array of forces - paramilitary groups
-Q.bundeswehr_strength = 100;      
-Q.bundeswehr_militancy = 1;
-Q.bundeswehr_loyalty = 0.8
+// Security forces
+Q.bundeswehr_strength = 182;       // thousand troops
+Q.bundeswehr_loyalty = 0.8;
+Q.bundeswehr_readiness = 2;        // 0-4
 
-Q.bundespolizei_strength = 30;    
-Q.bundespolizei_militancy = 1;
-Q.bundespolizei_loyalty = 0.7
+Q.bundespolizei_strength = 55;     // thousand
+Q.bundespolizei_loyalty = 0.7;
 
-Q.verfassungsschutz_strength = 20; 
+Q.landespolizei_strength = 270;    // thousand, all 16 Bundesländer
+Q.landespolizei_loyalty = 0.75;
+Q.border_controls = 1;             // 1 = internal border controls active
+
 Q.verfassungsschutz_loyalty = 0.75;
-Q.verfassungsschutz_power = 1;
+Q.verfassungsschutz_power = 1;     // 0-4
+
+Q.defence_spending = 2.4;          // % of GDP
+Q.defence_target = 2;              // NATO target
+Q.wehrdienst = 0;                  // 0 voluntary, 1 compulsory registration, 2 conscription
+
+Q.afd_classification = 2;          // 0 none, 1 suspected case, 2 confirmed extremist (suspended), 3 confirmed, 4 ban proceedings
+Q.extremism_threat = 2;            // 0 low, 1 moderate, 2 elevated, 3 high, 4 critical
 
 // The state of the country
 Q.nationalism_support = 50;

@@ -13,7 +13,9 @@
     ui = dendryUI;
     game = ui.game;
 
-    // Add your custom code here.
+    // Saves can't be imported from or exported to files.
+    ui.importSave = function() {};
+    ui.exportSlot = function() {};
   };
 
   var TITLE = "Social Democracy: An Alternate History" + '_' + "Autumn Chen";
@@ -21,9 +23,8 @@
   // the url is a link to game.json
   // test url: https://aucchen.github.io/social_democracy_mods/v0.1.json
   // TODO; 
-  window.loadMod = function(url) {
-      ui.loadGame(url);
-  };
+  // Mod loading is switched off: a loaded game.json can run any code.
+  window.loadMod = function(url) {};
 
   window.loadGerman = function() {
       ui.loadGame('game-de.json');
@@ -52,9 +53,7 @@
           "dark_mode_label": "Dunkel",
           "font_size_text": "Schriftgröße:",
           "decrease_font_button": "- verkleinern",
-          "increase_font_button": "+ vergrößern",
-          // save/load menu
-          "import_save_label": "Importiere Speicherstand:"
+          "increase_font_button": "+ vergrößern"
       };
       var text_label_map_classes = {
           //"save_button":"Speichern",
@@ -102,9 +101,7 @@
           "dark_mode_label": "Dark mode",
           "font_size_text": "Font size:",
           "decrease_font_button": "- decrease",
-          "increase_font_button": "+ increase",
-          // save/load menu
-          "import_save_label": "Import save file:"
+          "increase_font_button": "+ increase"
       };
       var text_label_map_classes = {
           //"save_button":"Save",
@@ -332,15 +329,6 @@
     } else {
         $('#light_mode')[0].checked = true;
     }
-    if (window.dendryUI.language) {
-        if (window.dendryUI.language == "de") {
-            $('#german')[0].checked = true;
-        } else {
-            $('#english')[0].checked = true;
-        }
-    } else {
-        $('#english')[0].checked = true;
-    }
   };
 
   
@@ -455,13 +443,27 @@ window.updateSidebar = function() {
         window.dendryUI.saveSettings();
   }
 
+  // After a page reload, continue from the latest autosave (Auto-0).
+  // Players start over with the New Game link.
+  window.resumeAutosave = function() {
+      var ui = window.dendryUI;
+      var saveString = localStorage[ui.save_prefix + '_a0'];
+      if (!saveString) {
+          return;
+      }
+      try {
+          var gameState = JSON.parse(saveString);
+          ui.loadAudio(gameState);
+          ui.dendryEngine.setState(gameState);
+      } catch (e) {
+          // Save from an older build that no longer fits: start fresh.
+          console.log('Could not resume autosave:', e);
+          ui.dendryEngine.beginGame();
+      }
+  };
+
   window.onload = function() {
     window.dendryUI.loadSettings({show_portraits: false});
-    if (localStorage[game.title + '_language']) {
-        if (localStorage[game.title + '_language'] == "de") {
-            window.loadGerman();
-        }
-    }
     if (window.dendryUI.dark_mode) {
         document.body.classList.add('dark-mode');
     }
@@ -473,6 +475,7 @@ window.updateSidebar = function() {
     }
     document.getElementById('font_size_value').textContent = window.dendryUI.font_size.toFixed(1) + "em";
     window.pinnedCardsDescription = "Advisor cards - actions are only usable once per 6 months.";
+    window.resumeAutosave();
   };
 
 }());

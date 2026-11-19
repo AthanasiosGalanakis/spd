@@ -757,3 +757,82 @@ table {
 #game-author {
     margin-top: 4px;
 }
+
+/* CSS for status/polls */
+/* ---------- Polls tab ---------- */
+/* Dendry wraps each line in <p>; the rows are <div>s, so hide the empty <p> the browser leaves behind */
+#qualities p:empty { display: none; }
+
+.poll-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0.25em 0;
+}
+.poll-name {
+  width: 4.6em;
+  flex: none;
+  font-weight: bold;
+}
+.poll-track {
+  flex: 1;
+  height: 0.8em;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--unavailable-bg-color);
+}
+.poll-track .poll-fill {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+}
+.poll-pct {
+  width: 3em;
+  flex: none;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Demographic groups: one stacked bar, click to open the numbers */
+.poll-group { margin: 0.6em 0; }
+.poll-group summary { cursor: pointer; }
+.poll-stack {
+  display: flex;
+  height: 0.8em;
+  margin-top: 0.25em;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #909090; /* the grey left over = Others */
+}
+.poll-stack .poll-fill { height: 100%; }
+.poll-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 0.8em;
+  margin: 0.3em 0 0.2em 0.9em;
+  font-size: 0.9em;
+}
+.poll-grid-name { font-weight: bold; }
+
+/* Party colours for the bars (same colours as the .seat classes) */
+.poll-fill.linke  { background: #B61C3E; }
+.poll-fill.greens { background: #46962B; }
+.poll-fill.spd    { background: #E3000F; }
+.poll-fill.cdu,
+.poll-fill.union  { background: #000000; }
+.poll-fill.csu    { background: #0080C9; }
+.poll-fill.fdp    { background: #C8A800; }
+.poll-fill.bsw    { background: #542344; }
+.poll-fill.afd    { background: #009EE0; }
+.poll-fill.ssw    { background: #003C8F; }
+.poll-fill.other  { background: #909090; }
+
+/* Dark mode: lighten the colours that vanish on a dark background */
+body.dark-mode .poll-track    { background: rgba(255, 255, 255, 0.1); }
+body.dark-mode .poll-fill.cdu,
+body.dark-mode .poll-fill.union { background: #d8d8d8; }
+body.dark-mode .poll-fill.bsw { background: #9a5a88; }
+body.dark-mode .poll-fill.ssw { background: #4a7fd0; }
+body.dark-mode .seat.cdu      { color: #d8d8d8; }
+body.dark-mode .seat.bsw      { color: #c080b0; }
+body.dark-mode .seat.ssw      { color: #6a9be0; }

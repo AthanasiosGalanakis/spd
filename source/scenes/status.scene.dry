@@ -88,101 +88,144 @@ Unemployment: [+ unemployed_2 +]%
 
 {!<span class="faction-center">Netzwerk Berlin</span><br>!}Strength: [+ center_strength : strength +]{!<br>!}Dissent: [+ center_dissent : dissent +]
 
-{!<span class="faction-labor">Union Wing</span><br>!}Strength: [+ labor_strength : strength +]{!<br>!}Dissent: [+ labor_dissent : dissent +]
-
 {!<span class="faction-right">Seeheimer Kreis</span><br>!}Strength: [+ right_strength : strength +]{!<br>!}Dissent: [+ right_dissent : dissent +]
+
+{!<span class="faction-labor">Union Wing</span><br>!}Strength: [+ labor_strength : strength +]{!<br>!}Dissent: [+ labor_dissent : dissent +]
 
 [? if socialfascist_formed > 0 : {!<span class="faction-socialfascist">Social-Fascists:</span><br>!}Strength: [+ neorevisionist_strength : strength +]{!<br>!}Dissent: [+ neorevisionist_dissent : dissent +] ?]
 
-@paramilitaries
+@security
 on-arrival: {!
-if (Q.rb_strength) {
-    Q.rb_strength_2 = Q.rb_strength.toFixed(1);
-}
-if (Q.rfb_strength) {
-    Q.rfb_strength_2 = Q.rfb_strength.toFixed(1);
-}
-if (Q.sh_strength) {
-    Q.sh_strength_2 = Q.sh_strength.toFixed(1);
-}
-if (Q.sa_strength) {
-    Q.sa_strength_2 = Q.sa_strength.toFixed(1);
-}
+Q.defence_spending_2 = (Q.defence_spending || 0).toFixed(1);
+Q.democracy_support_disp = Math.round(Q.democracy_support || 0);
+Q.socdem_support_disp = Math.round(Q.socdem_support || 0);
+Q.nationalism_support_disp = Math.round(Q.nationalism_support || 0);
 !}
 
-= Paramilitaries
+= Security cabinet
 
-{!<span class="tooltip-text" title="The Reichsbanner Schwarz-Rot-Gold is a popular organization for defending democracy, mostly affiliated with the SPD.">Reichsbanner</span>!} Strength: [+ rb_strength_2 +] thousand
+Defence minister: [+ defence_minister +] ([+ defence_minister_party +])
 
-Reichsbanner Militarization: [+ rb_militancy : militancy +]
+Interior minister: [+ interior_minister +] ([+ interior_minister_party +])
 
-{!<span class="tooltip-text" title="The RFB (Rotfrontkämpferbund) is a communist group associated with the KPD.">RFB</span>!} Strength: [+ rfb_strength_2 +] thousand
+= Armed forces
 
-RFB Militarization: [+ rfb_militancy : militancy +]
+{!<span class="tooltip-text" title="The German armed forces.">Bundeswehr</span>!}: [+ bundeswehr_strength +] thousand troops.
 
-{!<span class="tooltip-text" title="The Stahlhelm is a right-wing organization of war veterans associated with the DNVP.">Stahlhelm</span>!} Strength: [+ sh_strength_2 +] thousand
+Bundeswehr loyalty: [+ bundeswehr_loyalty : loyalty +]
 
-Stahlhelm Militarization: [+ sh_militancy : militancy +]
+Bundeswehr readiness: [+ bundeswehr_readiness +]/4
 
-{!<span class="tooltip-text" title="The SA (Sturmabteilung) is the Nazi paramilitary.">SA</span>!} Strength: [+ sa_strength_2 +] thousand
+Defence spending: [+ defence_spending_2 +]% of GDP (NATO target: [+ defence_target +]%)
 
-SA Militarization: [+ sa_militancy : militancy +]
+Military service: [? if wehrdienst == 0 : voluntary ?][? if wehrdienst == 1 : compulsory registration ?][? if wehrdienst == 2 : conscription ?]
 
-= Official military/paramilitaries
+= Police
 
-Reichswehr: [+ reichswehr_strength +] thousand troops.
+{!<span class="tooltip-text" title="The federal police, responsible for borders, railways and airports.">Bundespolizei</span>!}: [+ bundespolizei_strength +] thousand members.
 
-Reichswehr Loyalty: [+ reichswehr_loyalty : loyalty +]
+Bundespolizei loyalty: [+ bundespolizei_loyalty : loyalty +]
 
-Prussian police: [+ prussian_police_strength +] thousand members.
+{!<span class="tooltip-text" title="The police forces of the 16 Länder.">Landespolizei</span>!}: [+ landespolizei_strength +] thousand members.
 
-Prussian police loyalty: [+ prussian_police_loyalty : loyalty +]
+Landespolizei loyalty: [+ landespolizei_loyalty : loyalty +]
 
-[? if spd_in_government : Interior police loyalty: [+ interior_police_loyalty : loyalty +] ?]
+Border controls: [? if border_controls : active ?][? if border_controls == 0 : lifted ?]
+
+= Domestic intelligence
+
+{!<span class="tooltip-text" title="The Bundesamt für Verfassungsschutz, the domestic intelligence service.">Verfassungsschutz</span>!} loyalty: [+ verfassungsschutz_loyalty : loyalty +]
+
+Verfassungsschutz powers: [+ verfassungsschutz_power +]/4
+
+AfD status: [? if afd_classification == 0 : not observed ?][? if afd_classification == 1 : suspected case ?][? if afd_classification == 2 : confirmed extremist (suspended) ?][? if afd_classification == 3 : confirmed extremist ?][? if afd_classification == 4 : ban proceedings ?]
+
+Extremist threat: [? if extremism_threat == 0 : low ?][? if extremism_threat == 1 : moderate ?][? if extremism_threat == 2 : elevated ?][? if extremism_threat == 3 : high ?][? if extremism_threat == 4 : critical ?]
+
+= Public mood
+
+Support for democracy: [+ democracy_support_disp +]%
+
+Support for social democracy: [+ socdem_support_disp +]%
+
+Nationalism: [+ nationalism_support_disp +]%
 
 @polls
 on-arrival: {!
-Q.pro_republic_disp = Math.round(Q.pro_republic);
-Q.nationalism_disp = Math.round(Q.nationalism);
-Q.socialism_disp = Math.round(Q.socialism);
+// Work the polls out here too, so the tab is filled from the first turn.
+// Same maths as post_event; it only writes *_poll, *_bar and *_display values.
+var norm = {};
+for (var c of Q.classes) {
+    var class_votes = 0;
+    for (var party of Q.parties) {
+        class_votes += Math.max(Q[c+'_'+party] || 0, 0);
+    }
+    for (var party of Q.parties) {
+        norm[c+'_'+party] = class_votes > 0 ? 100*Math.max(Q[c+'_'+party] || 0, 0)/class_votes : 0;
+        Q[c+'_'+party+'_display'] = Math.round(norm[c+'_'+party]);
+    }
+}
+var total_support = 0;
+var support = {};
+for (var party of Q.parties) {
+    support[party] = 0;
+    for (var c of Q.classes) {
+        support[party] += (Q[c] || 0)*norm[c+'_'+party];
+    }
+    total_support += support[party];
+}
+for (var party of Q.parties) {
+    Q[party+'_poll'] = total_support > 0 ? Math.round(1000*support[party]/total_support)/10 : 0;
+    // the bar is full at 50%
+    Q[party+'_bar'] = Math.min(100, Q[party+'_poll']*2);
+}
+// CDU/CSU together (used while csu_split = 0)
+Q.union_poll = Math.round(10*((Q.cdu_poll || 0) + (Q.csu_poll || 0)))/10;
+Q.union_bar = Math.min(100, Q.union_poll*2);
+for (var c of Q.classes) {
+    Q[c+'_union_display'] = Math.round((norm[c+'_cdu'] || 0) + (norm[c+'_csu'] || 0));
+}
+Q.democracy_support_disp = Math.round(Q.democracy_support || 0);
 !}
 
-= Projected election results
+= Opinion Polls
 
-(if the election were to be held now):
+{!<div class="poll-row"><span class="poll-name ideology-tooltip-wrap seat spd" data-tip="spd" tabindex="0">SPD</span><span class="poll-track"><span class="poll-fill spd" style="width:!}[+ spd_bar +]{!%"></span></span><span class="poll-pct">!}[+ spd_poll +]{!%</span></div>!}
 
-SPD: [+ spd_votes +]%
+[? if csu_split = 0 : {!<div class="poll-row"><span class="poll-name ideology-tooltip-wrap seat cdu" data-tip="cducsu" tabindex="0">CDU/CSU</span><span class="poll-track"><span class="poll-fill union" style="width:!}[+ union_bar +]{!%"></span></span><span class="poll-pct">!}[+ union_poll +]{!%</span></div>!} ?]
 
-[? if sapd_formed: SAPD: [+ sapd_votes +]% ?]
+[? if csu_split = 1 : {!<div class="poll-row"><span class="poll-name ideology-tooltip-wrap seat cdu" data-tip="cdu" tabindex="0">CDU</span><span class="poll-track"><span class="poll-fill cdu" style="width:!}[+ cdu_bar +]{!%"></span></span><span class="poll-pct">!}[+ cdu_poll +]{!%</span></div>!} ?]
 
-[? if srpd_formed: SRPD: [+ srpd_votes +]% ?]
+[? if csu_split = 1 : {!<div class="poll-row"><span class="poll-name ideology-tooltip-wrap seat csu" data-tip="csu" tabindex="0">CSU</span><span class="poll-track"><span class="poll-fill csu" style="width:!}[+ csu_bar +]{!%"></span></span><span class="poll-pct">!}[+ csu_poll +]{!%</span></div>!} ?]
 
-Z + BVP: [+ z_votes +]%
+{!<div class="poll-row"><span class="poll-name ideology-tooltip-wrap seat afd" data-tip="afd" tabindex="0">AfD</span><span class="poll-track"><span class="poll-fill afd" style="width:!}[+ afd_bar +]{!%"></span></span><span class="poll-pct">!}[+ afd_poll +]{!%</span></div>!}
 
-KPD: [+ kpd_votes +]%
+{!<div class="poll-row"><span class="poll-name ideology-tooltip-wrap seat greens" data-tip="greens" tabindex="0">Grüne</span><span class="poll-track"><span class="poll-fill greens" style="width:!}[+ greens_bar +]{!%"></span></span><span class="poll-pct">!}[+ greens_poll +]{!%</span></div>!}
 
-[? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ ddp_votes +]%
+{!<div class="poll-row"><span class="poll-name ideology-tooltip-wrap seat linke" data-tip="linke" tabindex="0">Linke</span><span class="poll-track"><span class="poll-fill linke" style="width:!}[+ linke_bar +]{!%"></span></span><span class="poll-pct">!}[+ linke_poll +]{!%</span></div>!}
 
-DVP: [+ dvp_votes +]%
+{!<div class="poll-row"><span class="poll-name ideology-tooltip-wrap seat fdp" data-tip="fdp" tabindex="0">FDP</span><span class="poll-track"><span class="poll-fill fdp" style="width:!}[+ fdp_bar +]{!%"></span></span><span class="poll-pct">!}[+ fdp_poll +]{!%</span></div>!}
 
-DNVP: [+ dnvp_votes +]%
+{!<div class="poll-row"><span class="poll-name ideology-tooltip-wrap seat bsw" data-tip="bsw" tabindex="0">BSW</span><span class="poll-track"><span class="poll-fill bsw" style="width:!}[+ bsw_bar +]{!%"></span></span><span class="poll-pct">!}[+ bsw_poll +]{!%</span></div>!}
 
-NSDAP: [+ nsdap_votes +]%
+{!<div class="poll-row"><span class="poll-name ideology-tooltip-wrap seat ssw" data-tip="ssw" tabindex="0">SSW</span><span class="poll-track"><span class="poll-fill ssw" style="width:!}[+ ssw_bar +]{!%"></span></span><span class="poll-pct">!}[+ ssw_poll +]{!%</span></div>!}
 
-Others: [+ other_votes +]%
+{!<div class="poll-row"><span class="poll-name">Others</span><span class="poll-track"><span class="poll-fill other" style="width:!}[+ other_bar +]{!%"></span></span><span class="poll-pct">!}[+ other_poll +]{!%</span></div>!}
 
-**Detailed results for each demographic**
+= By demographic
 
-Workers: SPD: [+ workers_spd_display +]%, Z: [+ workers_z_display +]%, KPD: [+ workers_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ workers_ddp_display +]%, DVP: [+ workers_dvp_display +]%; DNVP: [+ workers_dnvp_display +]%, NSDAP: [+ workers_nsdap_display +]%, Others: [+ workers_other_display +]% [? if sapd_formed: SAPD: [+ workers_sapd_display +]% ?][? if srpd_formed: SRPD: [+ workers_srpd_display +]% ?]
+{!<details class="poll-group"><summary><b>Workers</b><span class="poll-stack"><span class="poll-fill linke" style="width:!}[+ workers_linke_display +]{!%"></span><span class="poll-fill spd" style="width:!}[+ workers_spd_display +]{!%"></span><span class="poll-fill greens" style="width:!}[+ workers_greens_display +]{!%"></span><span class="poll-fill fdp" style="width:!}[+ workers_fdp_display +]{!%"></span><span class="poll-fill union" style="width:!}[+ workers_union_display +]{!%"></span><span class="poll-fill bsw" style="width:!}[+ workers_bsw_display +]{!%"></span><span class="poll-fill afd" style="width:!}[+ workers_afd_display +]{!%"></span></span></summary><div class="poll-grid"><span><span class="poll-grid-name ideology-tooltip-wrap seat spd" data-tip="spd" tabindex="0">SPD</span> !}[+ workers_spd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat cdu" data-tip="cducsu" tabindex="0">CDU/CSU</span> !}[+ workers_union_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat afd" data-tip="afd" tabindex="0">AfD</span> !}[+ workers_afd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat greens" data-tip="greens" tabindex="0">Grüne</span> !}[+ workers_greens_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat linke" data-tip="linke" tabindex="0">Linke</span> !}[+ workers_linke_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat fdp" data-tip="fdp" tabindex="0">FDP</span> !}[+ workers_fdp_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat bsw" data-tip="bsw" tabindex="0">BSW</span> !}[+ workers_bsw_display +]{!%</span><span><span class="poll-grid-name">Others</span> !}[+ workers_other_display +]{!%</span>!}[? if sapd_formed : {!<span><b>SAPD</b> !}[+ workers_sapd_display +]{!%</span>!} ?][? if srpd_formed : {!<span><b>SRPD</b> !}[+ workers_srpd_display +]{!%</span>!} ?]{!</div></details>!}
 
-New Middle Class: SPD: [+ new_middle_spd_display +]%, Z: [+ new_middle_z_display +]%, KPD: [+ new_middle_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ new_middle_ddp_display +]%, DVP: [+ new_middle_dvp_display +]%; DNVP: [+ new_middle_dnvp_display +]%, NSDAP: [+ new_middle_nsdap_display +]%, Others: [+ new_middle_other_display +]% [? if sapd_formed: SAPD: [+ new_middle_sapd_display +]% ?] [? if srpd_formed: SRPD: [+ new_middle_srpd_display +]% ?]
+{!<details class="poll-group"><summary><b>New middle class</b><span class="poll-stack"><span class="poll-fill linke" style="width:!}[+ middle_class_linke_display +]{!%"></span><span class="poll-fill spd" style="width:!}[+ middle_class_spd_display +]{!%"></span><span class="poll-fill greens" style="width:!}[+ middle_class_greens_display +]{!%"></span><span class="poll-fill fdp" style="width:!}[+ middle_class_fdp_display +]{!%"></span><span class="poll-fill union" style="width:!}[+ middle_class_union_display +]{!%"></span><span class="poll-fill bsw" style="width:!}[+ middle_class_bsw_display +]{!%"></span><span class="poll-fill afd" style="width:!}[+ middle_class_afd_display +]{!%"></span></span></summary><div class="poll-grid"><span><span class="poll-grid-name ideology-tooltip-wrap seat spd" data-tip="spd" tabindex="0">SPD</span> !}[+ middle_class_spd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat cdu" data-tip="cducsu" tabindex="0">CDU/CSU</span> !}[+ middle_class_union_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat afd" data-tip="afd" tabindex="0">AfD</span> !}[+ middle_class_afd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat greens" data-tip="greens" tabindex="0">Grüne</span> !}[+ middle_class_greens_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat linke" data-tip="linke" tabindex="0">Linke</span> !}[+ middle_class_linke_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat fdp" data-tip="fdp" tabindex="0">FDP</span> !}[+ middle_class_fdp_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat bsw" data-tip="bsw" tabindex="0">BSW</span> !}[+ middle_class_bsw_display +]{!%</span><span><span class="poll-grid-name">Others</span> !}[+ middle_class_other_display +]{!%</span>!}[? if sapd_formed : {!<span><b>SAPD</b> !}[+ middle_class_sapd_display +]{!%</span>!} ?][? if srpd_formed : {!<span><b>SRPD</b> !}[+ middle_class_srpd_display +]{!%</span>!} ?]{!</div></details>!}
 
-Old Middle Class: SPD: [+ old_middle_spd_display +]%, Z: [+ old_middle_z_display +]%, KPD: [+ old_middle_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ old_middle_ddp_display +]%, DVP: [+ old_middle_dvp_display +]%; DNVP: [+ old_middle_dnvp_display +]%, NSDAP: [+ old_middle_nsdap_display +]%, Others: [+ old_middle_other_display +]% [? if sapd_formed: SAPD: [+ old_middle_sapd_display +]% ?] [? if srpd_formed: SRPD: [+ old_middle_srpd_display +]% ?]
+{!<details class="poll-group"><summary><b>Old middle class</b><span class="poll-stack"><span class="poll-fill linke" style="width:!}[+ petty_bourgeoisie_linke_display +]{!%"></span><span class="poll-fill spd" style="width:!}[+ petty_bourgeoisie_spd_display +]{!%"></span><span class="poll-fill greens" style="width:!}[+ petty_bourgeoisie_greens_display +]{!%"></span><span class="poll-fill fdp" style="width:!}[+ petty_bourgeoisie_fdp_display +]{!%"></span><span class="poll-fill union" style="width:!}[+ petty_bourgeoisie_union_display +]{!%"></span><span class="poll-fill bsw" style="width:!}[+ petty_bourgeoisie_bsw_display +]{!%"></span><span class="poll-fill afd" style="width:!}[+ petty_bourgeoisie_afd_display +]{!%"></span></span></summary><div class="poll-grid"><span><span class="poll-grid-name ideology-tooltip-wrap seat spd" data-tip="spd" tabindex="0">SPD</span> !}[+ petty_bourgeoisie_spd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat cdu" data-tip="cducsu" tabindex="0">CDU/CSU</span> !}[+ petty_bourgeoisie_union_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat afd" data-tip="afd" tabindex="0">AfD</span> !}[+ petty_bourgeoisie_afd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat greens" data-tip="greens" tabindex="0">Grüne</span> !}[+ petty_bourgeoisie_greens_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat linke" data-tip="linke" tabindex="0">Linke</span> !}[+ petty_bourgeoisie_linke_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat fdp" data-tip="fdp" tabindex="0">FDP</span> !}[+ petty_bourgeoisie_fdp_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat bsw" data-tip="bsw" tabindex="0">BSW</span> !}[+ petty_bourgeoisie_bsw_display +]{!%</span><span><span class="poll-grid-name">Others</span> !}[+ petty_bourgeoisie_other_display +]{!%</span>!}[? if sapd_formed : {!<span><b>SAPD</b> !}[+ petty_bourgeoisie_sapd_display +]{!%</span>!} ?][? if srpd_formed : {!<span><b>SRPD</b> !}[+ petty_bourgeoisie_srpd_display +]{!%</span>!} ?]{!</div></details>!}
 
-Rural: SPD: [+ rural_spd_display +]%, Z: [+ rural_z_display +]%, KPD: [+ rural_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ rural_ddp_display +]%, DVP: [+ rural_dvp_display +]%; DNVP: [+ rural_dnvp_display +]%, NSDAP: [+ rural_nsdap_display +]%, Others: [+ rural_other_display +]% [? if sapd_formed: SAPD: [+ rural_sapd_display +]% ?] [? if srpd_formed: SRPD: [+ rural_srpd_display +]% ?]
+{!<details class="poll-group"><summary><b>Rural</b><span class="poll-stack"><span class="poll-fill linke" style="width:!}[+ rural_linke_display +]{!%"></span><span class="poll-fill spd" style="width:!}[+ rural_spd_display +]{!%"></span><span class="poll-fill greens" style="width:!}[+ rural_greens_display +]{!%"></span><span class="poll-fill fdp" style="width:!}[+ rural_fdp_display +]{!%"></span><span class="poll-fill union" style="width:!}[+ rural_union_display +]{!%"></span><span class="poll-fill bsw" style="width:!}[+ rural_bsw_display +]{!%"></span><span class="poll-fill afd" style="width:!}[+ rural_afd_display +]{!%"></span></span></summary><div class="poll-grid"><span><span class="poll-grid-name ideology-tooltip-wrap seat spd" data-tip="spd" tabindex="0">SPD</span> !}[+ rural_spd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat cdu" data-tip="cducsu" tabindex="0">CDU/CSU</span> !}[+ rural_union_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat afd" data-tip="afd" tabindex="0">AfD</span> !}[+ rural_afd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat greens" data-tip="greens" tabindex="0">Grüne</span> !}[+ rural_greens_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat linke" data-tip="linke" tabindex="0">Linke</span> !}[+ rural_linke_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat fdp" data-tip="fdp" tabindex="0">FDP</span> !}[+ rural_fdp_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat bsw" data-tip="bsw" tabindex="0">BSW</span> !}[+ rural_bsw_display +]{!%</span><span><span class="poll-grid-name">Others</span> !}[+ rural_other_display +]{!%</span>!}[? if sapd_formed : {!<span><b>SAPD</b> !}[+ rural_sapd_display +]{!%</span>!} ?][? if srpd_formed : {!<span><b>SRPD</b> !}[+ rural_srpd_display +]{!%</span>!} ?]{!</div></details>!}
 
-Unemployed: SPD: [+ unemployed_spd_display +]%, Z: [+ unemployed_z_display +]%, KPD: [+ unemployed_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ unemployed_ddp_display +]%, DVP: [+ unemployed_dvp_display +]%; DNVP: [+ unemployed_dnvp_display +]%, NSDAP: [+ unemployed_nsdap_display +]%, Others: [+ unemployed_other_display +]% [? if sapd_formed: SAPD: [+ unemployed_sapd_display +]% ?] [? if srpd_formed: SRPD: [+ unemployed_srpd_display +]% ?]
+{!<details class="poll-group"><summary><b>Unemployed</b><span class="poll-stack"><span class="poll-fill linke" style="width:!}[+ unemployed_linke_display +]{!%"></span><span class="poll-fill spd" style="width:!}[+ unemployed_spd_display +]{!%"></span><span class="poll-fill greens" style="width:!}[+ unemployed_greens_display +]{!%"></span><span class="poll-fill fdp" style="width:!}[+ unemployed_fdp_display +]{!%"></span><span class="poll-fill union" style="width:!}[+ unemployed_union_display +]{!%"></span><span class="poll-fill bsw" style="width:!}[+ unemployed_bsw_display +]{!%"></span><span class="poll-fill afd" style="width:!}[+ unemployed_afd_display +]{!%"></span></span></summary><div class="poll-grid"><span><span class="poll-grid-name ideology-tooltip-wrap seat spd" data-tip="spd" tabindex="0">SPD</span> !}[+ unemployed_spd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat cdu" data-tip="cducsu" tabindex="0">CDU/CSU</span> !}[+ unemployed_union_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat afd" data-tip="afd" tabindex="0">AfD</span> !}[+ unemployed_afd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat greens" data-tip="greens" tabindex="0">Grüne</span> !}[+ unemployed_greens_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat linke" data-tip="linke" tabindex="0">Linke</span> !}[+ unemployed_linke_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat fdp" data-tip="fdp" tabindex="0">FDP</span> !}[+ unemployed_fdp_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat bsw" data-tip="bsw" tabindex="0">BSW</span> !}[+ unemployed_bsw_display +]{!%</span><span><span class="poll-grid-name">Others</span> !}[+ unemployed_other_display +]{!%</span>!}[? if sapd_formed : {!<span><b>SAPD</b> !}[+ unemployed_sapd_display +]{!%</span>!} ?][? if srpd_formed : {!<span><b>SRPD</b> !}[+ unemployed_srpd_display +]{!%</span>!} ?]{!</div></details>!}
 
-Catholics: SPD: [+ catholics_spd_display +]%, Z: [+ catholics_z_display +]%, KPD: [+ catholics_kpd_display +]%, [? if not ddp_name: DDP?][? if ddp_name != 0 : [+ ddp_name +]?]: [+ catholics_ddp_display +]%, DVP: [+ catholics_dvp_display +]%; DNVP: [+ catholics_dnvp_display +]%, NSDAP: [+ catholics_nsdap_display +]%, Others: [+ catholics_other_display +]% [? if sapd_formed: SAPD: [+ catholics_sapd_display +]% ?] [? if srpd_formed: SRPD: [+ catholics_srpd_display +]% ?]
+{!<details class="poll-group"><summary><b>East Germans</b><span class="poll-stack"><span class="poll-fill linke" style="width:!}[+ east_linke_display +]{!%"></span><span class="poll-fill spd" style="width:!}[+ east_spd_display +]{!%"></span><span class="poll-fill greens" style="width:!}[+ east_greens_display +]{!%"></span><span class="poll-fill fdp" style="width:!}[+ east_fdp_display +]{!%"></span><span class="poll-fill union" style="width:!}[+ east_union_display +]{!%"></span><span class="poll-fill bsw" style="width:!}[+ east_bsw_display +]{!%"></span><span class="poll-fill afd" style="width:!}[+ east_afd_display +]{!%"></span></span></summary><div class="poll-grid"><span><span class="poll-grid-name ideology-tooltip-wrap seat spd" data-tip="spd" tabindex="0">SPD</span> !}[+ east_spd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat cdu" data-tip="cducsu" tabindex="0">CDU/CSU</span> !}[+ east_union_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat afd" data-tip="afd" tabindex="0">AfD</span> !}[+ east_afd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat greens" data-tip="greens" tabindex="0">Grüne</span> !}[+ east_greens_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat linke" data-tip="linke" tabindex="0">Linke</span> !}[+ east_linke_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat fdp" data-tip="fdp" tabindex="0">FDP</span> !}[+ east_fdp_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat bsw" data-tip="bsw" tabindex="0">BSW</span> !}[+ east_bsw_display +]{!%</span><span><span class="poll-grid-name">Others</span> !}[+ east_other_display +]{!%</span>!}[? if sapd_formed : {!<span><b>SAPD</b> !}[+ east_sapd_display +]{!%</span>!} ?][? if srpd_formed : {!<span><b>SRPD</b> !}[+ east_srpd_display +]{!%</span>!} ?]{!</div></details>!}
 
-Support for the Republic: [+ pro_republic_disp +]%
+{!<details class="poll-group"><summary><b>Pensioners</b><span class="poll-stack"><span class="poll-fill linke" style="width:!}[+ pensioners_linke_display +]{!%"></span><span class="poll-fill spd" style="width:!}[+ pensioners_spd_display +]{!%"></span><span class="poll-fill greens" style="width:!}[+ pensioners_greens_display +]{!%"></span><span class="poll-fill fdp" style="width:!}[+ pensioners_fdp_display +]{!%"></span><span class="poll-fill union" style="width:!}[+ pensioners_union_display +]{!%"></span><span class="poll-fill bsw" style="width:!}[+ pensioners_bsw_display +]{!%"></span><span class="poll-fill afd" style="width:!}[+ pensioners_afd_display +]{!%"></span></span></summary><div class="poll-grid"><span><span class="poll-grid-name ideology-tooltip-wrap seat spd" data-tip="spd" tabindex="0">SPD</span> !}[+ pensioners_spd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat cdu" data-tip="cducsu" tabindex="0">CDU/CSU</span> !}[+ pensioners_union_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat afd" data-tip="afd" tabindex="0">AfD</span> !}[+ pensioners_afd_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat greens" data-tip="greens" tabindex="0">Grüne</span> !}[+ pensioners_greens_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat linke" data-tip="linke" tabindex="0">Linke</span> !}[+ pensioners_linke_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat fdp" data-tip="fdp" tabindex="0">FDP</span> !}[+ pensioners_fdp_display +]{!%</span><span><span class="poll-grid-name ideology-tooltip-wrap seat bsw" data-tip="bsw" tabindex="0">BSW</span> !}[+ pensioners_bsw_display +]{!%</span><span><span class="poll-grid-name">Others</span> !}[+ pensioners_other_display +]{!%</span>!}[? if sapd_formed : {!<span><b>SAPD</b> !}[+ pensioners_sapd_display +]{!%</span>!} ?][? if srpd_formed : {!<span><b>SRPD</b> !}[+ pensioners_srpd_display +]{!%</span>!} ?]{!</div></details>!}
+
+Support for democracy: [+ democracy_support_disp +]%
